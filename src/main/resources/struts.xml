@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <constant name="struts.objectFactory" value="spring"/>
+    <package name="default" namespace="/" extends="struts-default"
+             strict-method-invocation="false">
+        <!-- 基于通配符解决方案 -->
+        <!-- 约定大于配置 -->
+        <!-- 整合了Spring以后,action对象就是从Spring IOC容器中获取 -->
+        <action name="*_*" class="{1}Action" method="{2}">
+            <result>/WEB-INF/jsp/admin/{1}/{2}.jsp</result>
+            <result name="redirect" type="redirect">/{1}_list.action</result>
+        </action>
+
+        <!-- 客户前台进入填写货运单页面 -->
+        <action name="hydAddInput" class="hydAction" method="hydAddInput">
+            <result>/WEB-INF/jsp/customer/addInput.jsp</result>
+        </action>
+        <!-- 客户前台填写货运单 -->
+        <action name="hydAdd" class="hydAction" method="hydAdd">
+            <result>/WEB-INF/jsp/customer/success.jsp</result>
+        </action>
+        <!-- 客户查询本人所有运单 -->
+        <action name="listCustomerHz" class="customerHzdAction" method="listCustomerHz">
+            <result>/WEB-INF/jsp/customer/listHyd.jsp</result>
+        </action>
+        <action name="customerHzInput" class="customerHzdAction" method="customerHzInput">
+            <result>/WEB-INF/jsp/customer/customerHzInput.jsp</result>
+        </action>
+        <!-- 客户填写回执单 -->
+        <action name="customerHzAdd" class="customerHzdAction" method="customerHzAdd">
+            <result name="redirect" type="redirect">/listCustomerHz.action</result>
+        </action>
+
+        <!-- 点击配车进入货运回执单填写页面 -->
+        <action name="hydUpdate" class="hydAction" method="hydUpdate">
+            <result name="forCar">/WEB-INF/jsp/admin/hyhzd/addMain.jsp</result>
+        </action>
+
+        <!-- 点击下一步，提交货运回执单主表，并进入货运回执单详表填写页面 -->
+        <action name="hyhzdMainAdd" class="hyhzdMainAction" method="hyhzdMainAdd">
+            <result>/WEB-INF/jsp/admin/hyhzd/addDetail.jsp</result>
+        </action>
+
+        <!-- 提交货运回执单详表 -->
+        <action name="hyhzdDetailAdd" class="hyhzdDetailAction" method="hyhzdDetailAdd">
+            <result>/WEB-INF/jsp/admin/hyhzd/addSuccess.jsp</result>
+        </action>
+
+        <!-- 司机查看未发车运单 -->
+        <action name="daifaHyhzd" class="hyhzdMainAction" method="daifaHyhzd">
+            <result>/WEB-INF/jsp/driver/daifaList.jsp</result>
+        </action>
+
+        <!-- 司机确认发车(修改货运回执单中的execute为1) -->
+        <action name="updateExecute" class="hyhzdMainAction" method="updateExecute">
+            <result>/WEB-INF/jsp/driver/facheSuccess.jsp</result>
+        </action>
+
+        <!-- 查询货运回执单 -->
+        <action name="weichuHyhzd" class="hyhzdMainAction" method="weichuHyhzd">
+            <result>/WEB-INF/jsp/admin/hyhzd/weichuHyhzd.jsp</result>
+        </action>
+        <action name="weidaoHyhzd" class="hyhzdMainAction" method="weidaoHyhzd">
+            <result>/WEB-INF/jsp/admin/hyhzd/weidaoHyhzd.jsp</result>
+        </action>
+        <action name="yidaoHyhzd" class="hyhzdMainAction" method="yidaoHyhzd">
+            <result>/WEB-INF/jsp/admin/hyhzd/yidaoHyhzd.jsp</result>
+        </action>
+        <action name="weijieHyhzd" class="hyhzdMainAction" method="weijieHyhzd">
+            <result>/WEB-INF/jsp/admin/hyhzd/weijieHyhzd.jsp</result>
+        </action>
+        <action name="yijieHyhzd" class="hyhzdMainAction" method="yijieHyhzd">
+            <result>/WEB-INF/jsp/admin/hyhzd/yijieHyhzd.jsp</result>
+        </action>
+        <action name="listHyhzd" class="hyhzdMainAction" method="listHyhzd">
+            <result>/WEB-INF/jsp/admin/hyhzd/listHyhzd.jsp</result>
+        </action>
+
+        <!-- 司机根据id查询所有运输合同 -->
+        <action name="listDriverHz" method="listDriverHz" class="driverHzdAction">
+            <result>/WEB-INF/jsp/driver/wdHzd.jsp</result>
+        </action>
+        <action name="driverHzInput" class="driverHzdAction" method="driverHzInput">
+            <result>/WEB-INF/jsp/driver/driverHzInput.jsp</result>
+        </action>
+        <action name="driverHzAdd" class="driverHzdAction" method="driverHzAdd">
+            <result name="mistake">/WEB-INF/jsp/driver/mistake.jsp</result>
+            <result name="redirect" type="redirect">/listDriverHz.action</result>
+        </action>
+
+        <!-- 司机填写差错信息 -->
+        <action name="mistakeAdd" class="hzdMistakeAction" method="mistakeAdd">
+            <result name="redirect" type="redirect">/listDriverHz.action</result>
+        </action>
+
+        <!-- 进入客户金额结算页面 -->
+        <action name="customerJsInput" class="customerBillJsAction" method="customerJsInput">
+            <result>/WEB-INF/jsp/admin/customerJs/account.jsp</result>
+        </action>
+
+        <action name="customerJs" method="customerJs" class="customerBillJsAction">
+            <result name="redirect" type="redirect">/hyd_weijieHyd.action</result>
+        </action>
+
+        <!-- 进入客户金额结算页面 -->
+        <action name="driverJsInput" class="driverBillJsAction" method="driverJsInput">
+            <result>/WEB-INF/jsp/admin/driverJs/driverAccount.jsp</result>
+        </action>
+
+        <action name="driverJs" method="driverJs" class="driverBillJsAction">
+            <result name="redirect" type="redirect">/weijieHyhzd.action</result>
+        </action>
+
+        <!-- 登录 -->
+        <action name="login" class="loginAction" method="login">
+            <result>/WEB-INF/jsp/main.jsp</result>
+        </action>
+        <!-- 顶部页面跳转 -->
+        <action name="top" class="loginAction" method="top">
+            <result>/WEB-INF/jsp/top.jsp</result>
+        </action>
+        <!-- 左部页面跳转 -->
+        <action name="left" class="loginAction" method="left">
+            <result name="left1">/WEB-INF/jsp/left1.jsp</result>
+            <result name="left2">/WEB-INF/jsp/left2.jsp</result>
+            <result name="left3">/WEB-INF/jsp/left3.jsp</result>
+        </action>
+        <!-- 主页面跳转 -->
+        <action name="welcome" class="loginAction" method="welcome">
+            <result>/WEB-INF/jsp/welcome.jsp</result>
+        </action>
+        <!-- 退出系统跳转 -->
+        <action name="logout" class="loginAction" method="logout">
+            <result>/login.jsp</result>
+        </action>
+    </package>
+
+</struts>
